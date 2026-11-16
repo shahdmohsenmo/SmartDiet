@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Workout Plan — SmartDiet</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .workout-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+
+    .workout-card {
+      background: linear-gradient(135deg, #ffffff 0%, #f8fff8 100%);
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 10px 30px rgba(46, 139, 87, 0.1);
+      border: 1px solid rgba(46, 139, 87, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .workout-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(46, 139, 87, 0.2);
+    }
+
+    .workout-card h3 {
+      color: #2e8b57;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid rgba(46, 139, 87, 0.2);
+    }
+
+    .exercise-item {
+      margin: 12px 0;
+      padding: 12px;
+      background: white;
+      border-radius: 10px;
+      border-left: 4px solid #4caf50;
+    }
+
+    .exercise-name {
+      font-weight: 600;
+      color: #246b45;
+    }
+
+    .exercise-details {
+      font-size: 14px;
+      color: #666;
+      margin-top: 5px;
+    }
+
+    .workout-tip {
+      background: #e3f2fd;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 15px;
+      border-left: 4px solid #2196f3;
+    }
+
+    .schedule-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    .schedule-table th,
+    .schedule-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .schedule-table th {
+      background: #f5fff5;
+      color: #2e8b57;
+      font-weight: 600;
+    }
+
+    .intensity-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-left: 10px;
+    }
+
+    .low-intensity {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    .medium-intensity {
+      background: #fff3e0;
+      color: #f57c00;
+    }
+
+    .high-intensity {
+      background: #ffebee;
+      color: #c62828;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="nav">
+    <div class="brand">Smart<span>Diet</span></div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="profile.html">Create Profile</a>
+      <a href="plan.html">My Plan</a>
+      <a href="workout.html" class="active">Workout Plan</a>
+      <a href="ai.html">AI Coach</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <h2 style="text-align: center; margin-bottom: 10px; color: #2e8b57;">
+      💪 Personalized Workout Plan
+    </h2>
+    <p style="text-align: center; color: #666; margin-bottom: 30px;">
+      AI-generated workout plan tailored to your fitness level and goals
+    </p>
+
+    <div id="workoutSummary" class="result" style="text-align: center;"></div>
+
+    <div class="workout-container">
+      <div class="workout-card">
+        <h3>🏋️ Strength Training</h3>
+        <div class="exercise-item">
+          <div class="exercise-name">Barbell Squats</div>
+          <div class="exercise-details">3 sets × 8-12 reps | Rest: 60-90s</div>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-name">Bench Press</div>
+          <div class="exercise-details">3 sets × 8-12 reps | Rest: 60-90s</div>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-name">Bent Over Rows</div>
+          <div class="exercise-details">3 sets × 8-12 reps | Rest: 60-90s</div>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-name">Overhead Press</div>
+          <div class="exercise-details">3 sets × 8-12 reps | Rest: 60-90s</div>
+        </div>
+        <div class="workout-tip">
+          <strong>💡 Pro Tip:</strong> Focus on form over weight. Increase weight by 2.5-5% weekly.
+        </div>
+      </div>
+
+      <div class="workout-card">
+        <h3>🏃 Cardio & Conditioning</h3>
+        <div class="exercise-item">
+          <div class="exercise-name">HIIT Sprints</div>
+          <div class="exercise-details">30s sprint, 60s walk × 10 rounds</div>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-name">Steady State Cardio</div>
+          <div class="exercise-details">30-45 min at 60-70% max heart rate</div>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-name">Stair Climbing</div>
+          <div class="exercise-details">20-30 min | 100-150 floors</div>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-name">Jump Rope</div>
+          <div class="exercise-details">10 min interval training</div>
+        </div>
+        <div class="workout-tip">
+          <strong>💡 Pro Tip:</strong> Do cardio on non-strength days or after weight training.
+        </div>
+      </div>
+
+      <div class="workout-card">
+        <h3>🧘 Mobility & Recovery</h3>
+        <div class="exercise-item">
+          <div class="exercise-name">Dynamic Stretching</div>
+          <div class="exercise-details">10-15 min pre-workout</div>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-name">Static Stretching</div>
+          <div class="exercise-details">15-20 min post-workout</div>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-name">Foam Rolling</div>
+          <div class="exercise-details">10 min daily for muscle recovery</div>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-name">Deep Breathing</div>
+          <div class="exercise-details">5 min for stress reduction</div>
+        </div>
+        <div class="workout-tip">
+          <strong>💡 Pro Tip:</strong> Never skip mobility work - it prevents injuries!
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 40px;">
+      <h3 style="color: #2e8b57; margin-bottom: 20px;">📅 Weekly Workout Schedule</h3>
+      <table class="schedule-table">
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th>Focus</th>
+            <th>Duration</th>
+            <th>Intensity</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody id="scheduleBody"></tbody>
+      </table>
+    </div>
+
+    <div style="margin-top: 40px; text-align: center;">
+      <button onclick="generateWorkoutPlan()" class="btn">🔄 Regenerate Workout Plan</button>
+      <a href="ai.html" class="btn" style="background: linear-gradient(135deg, #2196f3, #1976d2);">
+        🤖 Ask AI Coach
+      </a>
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      generateWorkoutPlan();
+    });
+
+    function generateWorkoutPlan() {
+      const profileRaw = localStorage.getItem('smartdiet_profile');
+      if (!profileRaw) {
+        document.getElementById('workoutSummary').innerHTML = `
+          <div style="background: #fff3e0; padding: 20px; border-radius: 10px;">
+            <h3>No Profile Found</h3>
+            <p>Please create your profile first to generate a personalized workout plan.</p>
+            <a href="profile.html" class="btn">Create Profile</a>
+          </div>
+        `;
+        return;
+      }
+
+      const profile = JSON.parse(profileRaw);
+      const workoutPlan = generatePersonalizedWorkout(profile);
+
+      // Display summary
+      document.getElementById('workoutSummary').innerHTML = `
+        <div style="background: linear-gradient(135deg, #e8f5e9, #ffffff); padding: 25px; border-radius: 15px;">
+          <h3 style="color: #2e8b57; margin-bottom: 15px;">${workoutPlan.title}</h3>
+          <p><strong>Goal:</strong> ${workoutPlan.goal}</p>
+          <p><strong>Frequency:</strong> ${workoutPlan.frequency}</p>
+          <p><strong>Weekly Calories Burned:</strong> ${workoutPlan.caloriesBurned} kcal</p>
+          <p><strong>Recommended Rest Days:</strong> ${workoutPlan.restDays}</p>
+        </div>
+      `;
+
+      // Fill schedule table
+      const scheduleBody = document.getElementById('scheduleBody');
+      scheduleBody.innerHTML = workoutPlan.schedule.map(day => `
+        <tr>
+          <td><strong>${day.day}</strong></td>
+          <td>${day.focus}</td>
+          <td>${day.duration}</td>
+          <td><span class="intensity-badge ${day.intensityClass}">${day.intensity}</span></td>
+          <td>${day.notes}</td>
+        </tr>
+      `).join('');
+    }
+
+    function generatePersonalizedWorkout(profile) {
+      // Calculate fitness level
+      const bmi = profile.height > 0 ? profile.weight / ((profile.height / 100) ** 2) : 0;
+      let fitnessLevel = 'beginner';
+      if (profile.activity >= 1.55) fitnessLevel = 'intermediate';
+      if (profile.activity >= 1.725) fitnessLevel = 'advanced';
+
+      // Determine workout focus
+      let focus, frequency, intensity;
+      switch (profile.goal) {
+        case 'lose':
+          focus = 'Fat Loss & Cardio';
+          frequency = '5-6 days/week';
+          intensity = 'High';
+          break;
+        case 'gain':
+          focus = 'Muscle Building';
+          frequency = '4-5 days/week';
+          intensity = 'High';
+          break;
+        default:
+          focus = 'Maintenance & Health';
+          frequency = '3-4 days/week';
+          intensity = 'Moderate';
+      }
+
+      // Generate schedule
+      const schedule = [
+        { day: 'Monday', focus: 'Full Body Strength', duration: '60 min', intensity: 'High', intensityClass: 'high-intensity', notes: 'Compound movements' },
+        { day: 'Tuesday', focus: 'Cardio HIIT', duration: '45 min', intensity: 'High', intensityClass: 'high-intensity', notes: 'Interval training' },
+        { day: 'Wednesday', focus: 'Active Recovery', duration: '30 min', intensity: 'Low', intensityClass: 'low-intensity', notes: 'Yoga/stretching' },
+        { day: 'Thursday', focus: 'Upper Body Strength', duration: '60 min', intensity: 'High', intensityClass: 'high-intensity', notes: 'Push/pull exercises' },
+        { day: 'Friday', focus: 'Lower Body Strength', duration: '60 min', intensity: 'High', intensityClass: 'high-intensity', notes: 'Leg focus' },
+        { day: 'Saturday', focus: 'Cardio Steady State', duration: '45 min', intensity: 'Medium', intensityClass: 'medium-intensity', notes: 'Outdoor activity' },
+        { day: 'Sunday', focus: 'Complete Rest', duration: '0 min', intensity: 'None', intensityClass: '', notes: 'Recovery day' }
+      ];
+
+      // Adjust based on fitness level
+      if (fitnessLevel === 'beginner') {
+        schedule.forEach(day => {
+          if (day.intensity === 'High') day.intensity = 'Medium';
+          day.duration = day.duration.replace('60', '45').replace('45', '30');
+        });
+      }
+
+      return {
+        title: `Personalized ${focus} Program`,
+        goal: `Primary: ${profile.goal === 'lose' ? 'Weight Loss' : profile.goal === 'gain' ? 'Muscle Gain' : 'Maintenance'}`,
+        frequency: frequency,
+        caloriesBurned: Math.round(profile.weight * 5 * (profile.goal === 'lose' ? 6 : 4)),
+        restDays: profile.goal === 'lose' ? '1-2' : '2',
+        schedule: schedule
+      };
+    }
+  </script>
+</body>
+
+</html>

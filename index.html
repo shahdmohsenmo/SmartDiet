@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>SmartDiet — Home</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <nav class="nav">
+    <div class="brand">Smart<span>Diet</span></div>
+    <div class="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="profile.html">Create Profile</a>
+      <a href="plan.html" id="planLink">My Plan</a>
+      <a href="workout.html">Workout Plan</a>
+      <a href="ai.html">AI Coach</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <h1>Smart Diet Expert System</h1>
+      <p class="lead">Personalized weekly meal plans — allergy-aware, goal-driven, with a local AI coach.</p>
+      <div class="cta-row">
+        <a class="btn" href="profile.html">Start Your Plan</a>
+        <a class="btn ghost" href="ai.html">Open AI Coach</a>
+      </div>
+      <div class="features">
+        <div><strong>7-day plans</strong><br />Custom meals & snacks</div>
+        <div><strong>Allergy safe</strong><br />Auto substitutes</div>
+        <div><strong>AI-Powered</strong><br />Smart meal recommendations</div>
+      </div>
+    </div>
+    <div class="hero-image">
+      <img src="images\istockphoto-1239564181-170667a.jpg" alt="Healthy nutrition" />
+    </div>
+  </header>
+
+  <section class="info">
+    <h2>How it works</h2>
+    <ol>
+      <li>Fill your profile (age, gender, height, weight, activity, allergies).</li>
+      <li>The system computes BMI, calories, and builds a 7-day plan tailored to your goal.</li>
+      <li>Use the AI Coach to explain the plan, swap meals, or adjust calories — then apply changes.</li>
+    </ol>
+
+    <div
+      style="text-align: center; margin-top: 40px; padding: 20px; background: linear-gradient(135deg, #f8fff8 0%, #ffffff 100%); border-radius: 15px; box-shadow: 0 10px 30px rgba(46, 139, 87, 0.1);">
+      <div
+        style="background: #ffebee; padding: 15px; border-radius: 10px; margin-bottom: 15px; border-left: 4px solid #f44336;">
+        <strong>🛡️ Allergy Protection Guaranteed</strong>
+        <p style="margin: 5px 0 0 0; font-size: 14px;">Our system strictly avoids all listed allergens including eggs,
+          dairy, gluten, etc.</p>
+      </div>
+      <img src="images\Screenshot_14-12-2025_14316_.jpeg" alt="Diet Planning"
+     style="width: 100%; max-width: 600px; height: 170px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); object-fit: cover;" />
+      <p style="margin-top: 15px; color: #2e8b57; font-weight: 600;">Start your journey to healthier living today!</p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div>Local demo — everything stored in your browser (no server required).</div>
+    <div>&copy; SmartDiet - Allergy Safe Nutrition System</div>
+  </footer>
+
+  <script>
+    // disable My Plan link if no plan exists
+    const planLink = document.getElementById('planLink');
+    if (!localStorage.getItem('smartdiet_plan')) {
+      planLink.classList.add('disabled');
+      planLink.href = '#';
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Create Profile — SmartDiet</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .health-warning {
+      background: #fff8e1;
+      border-left: 4px solid #ff9800;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #5d4037;
+    }
+
+    .allergy-highlight {
+      background: #ffebee;
+      border: 2px solid #f44336;
+    }
+
+    .condition-options {
+      display: none;
+      margin-top: 10px;
+      padding: 10px;
+      background: #f5f5f5;
+      border-radius: 8px;
+    }
+
+    .condition-options.active {
+      display: block;
+    }
+
+    .severity-selector {
+      margin: 10px 0;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .severity-btn {
+      padding: 8px 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 20px;
+      background: white;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 14px;
+    }
+
+    .severity-btn.active {
+      background: #2e8b57;
+      color: white;
+      border-color: #2e8b57;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="nav">
+    <div class="brand">Smart<span>Diet</span></div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="profile.html" class="active">Create Profile</a>
+      <a href="plan.html" id="planLink">My Plan</a>
+      <a href="workout.html">Workout Plan</a>
+      <a href="ai.html">AI Coach</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <h2>Step 1 — Tell us about you</h2>
+    <p style="color: #666; margin-bottom: 25px;">Our AI will analyze your data and create a fully personalized 7-day
+      plan</p>
+
+    <form id="profileForm" class="form-grid">
+      <label>Full Name
+        <input id="name" required placeholder="John Smith" />
+      </label>
+
+      <label>Age (years)
+        <input id="age" type="number" min="10" max="120" required />
+      </label>
+
+      <label>Gender
+        <select id="gender">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </label>
+
+      <label>Height (cm)
+        <input id="height" type="number" min="100" max="230" required placeholder="175" />
+      </label>
+
+      <label>Weight (kg)
+        <input id="weight" type="number" min="30" max="300" required placeholder="70" />
+      </label>
+
+      <label>Activity Level
+        <select id="activity">
+          <option value="1.2">Sedentary (little or no exercise)</option>
+          <option value="1.375">Lightly active (light exercise 1-3 days/week)</option>
+          <option value="1.55">Moderately active (moderate exercise 3-5 days/week)</option>
+          <option value="1.725">Very active (hard exercise 6-7 days/week)</option>
+          <option value="1.9">Extra active (very hard exercise & physical job)</option>
+        </select>
+      </label>
+
+      <label>Primary Goal
+        <select id="goal">
+          <option value="lose">Lose Weight</option>
+          <option value="maintain">Maintain Weight</option>
+          <option value="gain">Gain Muscle/Weight</option>
+        </select>
+      </label>
+
+      <label>Diet Preference
+        <select id="preference">
+          <option value="balanced">Balanced</option>
+          <option value="high_protein">High Protein</option>
+          <option value="low_carb">Low Carb</option>
+          <option value="keto">Keto</option>
+          <option value="vegetarian">Vegetarian</option>
+          <option value="vegan">Vegan</option>
+          <option value="mediterranean">Mediterranean</option>
+          <option value="paleo">Paleo</option>
+        </select>
+      </label>
+
+      <label>Health Condition (optional)
+        <select id="healthCondition">
+          <option value="">None</option>
+          <option value="diabetes">Diabetes/Pre-diabetes</option>
+          <option value="hypertension">High Blood Pressure</option>
+          <option value="cholesterol">High Cholesterol</option>
+          <option value="thyroid">Thyroid Issues</option>
+          <option value="pcos">PCOS</option>
+          <option value="ibs">Digestive Issues (IBS)</option>
+          <option value="allergies">Food Allergies</option>
+          <option value="heart_disease">Heart Disease</option>
+          <option value="kidney_disease">Kidney Disease</option>
+          <option value="anemia">Anemia</option>
+        </select>
+      </label>
+
+      <div id="conditionOptions" class="condition-options">
+        <div class="severity-selector">
+          <span>Severity:</span>
+          <button type="button" class="severity-btn" data-value="mild">Mild</button>
+          <button type="button" class="severity-btn" data-value="moderate">Moderate</button>
+          <button type="button" class="severity-btn" data-value="severe">Severe</button>
+        </div>
+        <input type="hidden" id="conditionSeverity" value="mild">
+      </div>
+
+      <label>Food Allergies / Intolerances
+        <input id="allergy" placeholder="e.g., milk, eggs, peanuts, gluten, soy, fish" class="allergy-input" />
+      </label>
+
+      <div id="allergyWarning" style="display:none;"></div>
+
+      <div class="health-warning">
+        <strong>⚠️ Important:</strong> Our system will automatically avoid all allergens and adjust meals based on your
+        health conditions. For severe medical conditions, please consult your doctor.
+      </div>
+
+      <label>Meals Per Day
+        <select id="mealsCount">
+          <option value="3">3 Meals</option>
+          <option value="4">3 Meals + 1 Snack</option>
+          <option value="5">3 Meals + 2 Snacks</option>
+          <option value="6">6 Small Meals</option>
+        </select>
+      </label>
+
+      <label>Preferred Cuisine
+        <select id="cuisine">
+          <option value="mixed">Mixed/International</option>
+          <option value="mediterranean">Mediterranean</option>
+          <option value="arabic">Arabic/Middle Eastern</option>
+          <option value="egyptian">Egyptian</option>
+          <option value="asian">Asian</option>
+          <option value="mexican">Mexican</option>
+          <option value="indian">Indian</option>
+          <option value="american">American</option>
+        </select>
+      </label>
+
+      <label>Cooking Time Preference
+        <select id="cookingTime">
+          <option value="any">Any</option>
+          <option value="quick">Quick (under 30 min)</option>
+          <option value="medium">Medium (30-60 min)</option>
+          <option value="long">Long (over 60 min)</option>
+        </select>
+      </label>
+
+      <label>Budget Level
+        <select id="budget">
+          <option value="any">Any</option>
+          <option value="low">Low Budget</option>
+          <option value="medium">Medium Budget</option>
+          <option value="high">High Budget</option>
+        </select>
+      </label>
+
+      <div class="full">
+        <button class="btn" id="generateBtn" type="submit"
+          style="background: linear-gradient(135deg, #2e8b57, #4caf50); padding: 18px 40px; font-size: 18px;">
+          🚀 Generate My Smart 7-Day Plan
+        </button>
+        <button type="button" id="saveBtn" class="btn ghost">💾 Save Profile</button>
+      </div>
+    </form>
+
+    <div id="message" class="result" style="display:none;"></div>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const healthCondition = document.getElementById('healthCondition');
+      const conditionOptions = document.getElementById('conditionOptions');
+      const severityButtons = document.querySelectorAll('.severity-btn');
+      const conditionSeverity = document.getElementById('conditionSeverity');
+
+      // Handle health condition selection
+      healthCondition.addEventListener('change', function () {
+        if (this.value) {
+          conditionOptions.classList.add('active');
+        } else {
+          conditionOptions.classList.remove('active');
+        }
+      });
+
+      // Handle severity selection
+      severityButtons.forEach(btn => {
+        btn.addEventListener('click', function () {
+          severityButtons.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          conditionSeverity.value = this.dataset.value;
+        });
+      });
+
+      // Initialize severity buttons
+      severityButtons[0].classList.add('active');
+
+      // تحقق تلقائي من الحساسيات
+      document.getElementById('allergy').addEventListener('input', function (e) {
+        const value = this.value.toLowerCase();
+        const allergyWarning = document.getElementById('allergyWarning');
+
+        if (value.includes('egg')) {
+          allergyWarning.innerHTML = `
+            <div style="background: #ffebee; padding: 15px; border-radius: 8px; border-left: 4px solid #f44336;">
+              <strong>🚨 Egg Allergy Detected</strong><br>
+              <small>The system will COMPLETELY avoid all egg-containing foods including:</small><br>
+              • Eggs in any form (boiled, scrambled, etc.)<br>
+              • Mayonnaise and sauces containing egg<br>
+              • Baked goods with egg<br>
+              • Any dish using egg as binder
+            </div>
+          `;
+          allergyWarning.style.display = 'block';
+        } else if (value.includes('milk') || value.includes('dairy')) {
+          allergyWarning.innerHTML = `
+            <div style="background: #ffebee; padding: 15px; border-radius: 8px; border-left: 4px solid #f44336;">
+              <strong>⚠️ Dairy Allergy Detected</strong> - All dairy products will be avoided
+            </div>
+          `;
+          allergyWarning.style.display = 'block';
+        } else if (value.trim()) {
+          allergyWarning.innerHTML = `
+            <div style="background: #e8f5e9; padding: 15px; border-radius: 8px; border-left: 4px solid #4caf50;">
+              <strong>✅ Allergy Alert Active</strong> - All listed allergens will be strictly avoided
+            </div>
+          `;
+          allergyWarning.style.display = 'block';
+        } else {
+          allergyWarning.style.display = 'none';
+        }
+      });
+
+      // Load saved profile
+      const raw = localStorage.getItem('smartdiet_profile');
+      if (raw) {
+        try {
+          const p = JSON.parse(raw);
+          document.getElementById('name').value = p.name || '';
+          document.getElementById('age').value = p.age || '';
+          document.getElementById('gender').value = p.gender || 'male';
+          document.getElementById('height').value = p.height || '';
+          document.getElementById('weight').value = p.weight || '';
+          document.getElementById('activity').value = p.activity || '1.2';
+          document.getElementById('goal').value = p.goal || 'lose';
+          document.getElementById('preference').value = p.preference || 'balanced';
+          document.getElementById('healthCondition').value = p.healthCondition || '';
+          if (p.healthCondition) conditionOptions.classList.add('active');
+          conditionSeverity.value = p.conditionSeverity || 'mild';
+          document.getElementById('allergy').value = p.allergy || '';
+          document.getElementById('mealsCount').value = p.mealsCount || '3';
+          document.getElementById('cuisine').value = p.cuisine || 'mixed';
+          document.getElementById('cookingTime').value = p.cookingTime || 'any';
+          document.getElementById('budget').value = p.budget || 'any';
+
+          // Update severity button
+          severityButtons.forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.value === (p.conditionSeverity || 'mild')) {
+              btn.classList.add('active');
+            }
+          });
+
+          // Trigger allergy warning if exists
+          if (p.allergy) {
+            document.getElementById('allergy').dispatchEvent(new Event('input'));
+          }
+        } catch (e) { }
+      }
+
+      document.getElementById('saveBtn').addEventListener('click', () => {
+        const profile = collectProfile();
+        localStorage.setItem('smartdiet_profile', JSON.stringify(profile));
+        showMessage('✅ Profile saved! Click "Generate" to create your plan.', 'success');
+      });
+
+      document.getElementById('profileForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const profile = collectProfile();
+
+        if (!validateProfile(profile)) return;
+
+        // Validate health conditions
+        if (profile.healthCondition && profile.conditionSeverity === 'severe') {
+          if (!confirm('⚠️ You have indicated a severe health condition. While our system will provide appropriate recommendations, please consult your doctor before starting any new diet plan. Continue?')) {
+            return;
+          }
+        }
+
+        const plan = buildPlan(profile);
+        localStorage.setItem('smartdiet_profile', JSON.stringify(profile));
+        localStorage.setItem('smartdiet_plan', JSON.stringify(plan));
+
+        window.location.href = 'plan.html';
+      });
+
+      function showMessage(text, type) {
+        const message = document.getElementById('message');
+        message.style.display = 'block';
+        message.innerHTML = `
+          <div style="background: ${type === 'success' ? '#e8f5e9' : '#ffebee'}; 
+                      padding: 20px; border-radius: 10px; 
+                      border-left: 4px solid ${type === 'success' ? '#4caf50' : '#f44336'};">
+            ${text}
+          </div>
+        `;
+        setTimeout(() => message.style.display = 'none', 5000);
+      }
+
+      function validateProfile(profile) {
+        if (!profile.name || !profile.age || !profile.height || !profile.weight) {
+          showMessage('Please fill in all required fields!', 'error');
+          return false;
+        }
+        if (profile.age < 10 || profile.age > 120) {
+          showMessage('Please enter a valid age between 10 and 120!', 'error');
+          return false;
+        }
+        return true;
+      }
+    });
+
+    function collectProfile() {
+      return {
+        name: document.getElementById('name').value.trim() || 'User',
+        age: Number(document.getElementById('age').value),
+        gender: document.getElementById('gender').value,
+        height: Number(document.getElementById('height').value),
+        weight: Number(document.getElementById('weight').value),
+        activity: document.getElementById('activity').value,
+        goal: document.getElementById('goal').value,
+        preference: document.getElementById('preference').value,
+        healthCondition: document.getElementById('healthCondition').value,
+        conditionSeverity: document.getElementById('conditionSeverity').value,
+        allergy: document.getElementById('allergy').value.trim(),
+        mealsCount: document.getElementById('mealsCount').value,
+        cuisine: document.getElementById('cuisine').value,
+        cookingTime: document.getElementById('cookingTime').value,
+        budget: document.getElementById('budget').value
+      };
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>AI Coach — SmartDiet</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .ai-examples {
+      background: #f0f8ff;
+      padding: 20px;
+      border-radius: 15px;
+      margin: 20px 0;
+      border-left: 4px solid #2196f3;
+    }
+
+    .ai-examples h4 {
+      color: #1976d2;
+      margin-bottom: 10px;
+    }
+
+    .allergy-focus {
+      background: #ffebee;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+      border-left: 4px solid #f44336;
+    }
+
+    .quick-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 15px 0;
+    }
+
+    .quick-btn {
+      padding: 10px 15px;
+      background: linear-gradient(135deg, #4caf50, #2e8b57);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .quick-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+    }
+
+    .quick-btn.orange { background: linear-gradient(135deg, #ff9800, #f57c00); }
+    .quick-btn.blue { background: linear-gradient(135deg, #2196f3, #1976d2); }
+    .quick-btn.purple { background: linear-gradient(135deg, #9c27b0, #7b1fa2); }
+    .quick-btn.brown { background: linear-gradient(135deg, #795548, #5d4037); }
+    .quick-btn.red { background: linear-gradient(135deg, #f44336, #d32f2f); }
+    .quick-btn.teal { background: linear-gradient(135deg, #009688, #00796b); }
+    .quick-btn.cyan { background: linear-gradient(135deg, #00bcd4, #0097a7); }
+  </style>
+</head>
+
+<body>
+  <nav class="nav">
+    <div class="brand">Smart<span>Diet</span></div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="profile.html">Create Profile</a>
+      <a href="plan.html">My Plan</a>
+      <a href="workout.html">Workout Plan</a>
+      <a href="ai.html" class="active">AI Coach</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <h2>🤖 AI Coach — Your Nutrition Assistant</h2>
+
+    <div class="allergy-focus">
+      <strong>🛡️ Allergy Protection Active</strong>
+      <p style="margin: 5px 0 0 0; font-size: 14px;">All meals are automatically filtered for your dietary needs</p>
+    </div>
+
+    <div class="ai-examples">
+      <h4>Quick Actions:</h4>
+      <div class="quick-actions">
+        <button onclick="quickAction('protein sources')" class="quick-btn">Protein Sources</button>
+        <button onclick="quickAction('egg free alternatives')" class="quick-btn orange">Egg Free</button>
+        <button onclick="quickAction('quick healthy meals')" class="quick-btn blue">Quick Meals</button>
+        <button onclick="quickAction('workout for weight loss')" class="quick-btn purple">Workout Tips</button>
+        <button onclick="quickAction('meal prep ideas')" class="quick-btn brown">Meal Prep</button>
+        <button onclick="quickAction('dairy free options')" class="quick-btn red">Dairy Free</button>
+        <button onclick="quickAction('healthy snacks')" class="quick-btn teal">Healthy Snacks</button>
+        <button onclick="quickAction('best foods for energy')" class="quick-btn cyan">Energy Foods</button>
+        <button onclick="quickAction('how to read nutrition labels')" class="quick-btn">Nutrition Labels</button>
+        <button onclick="quickAction('vegetarian protein sources')" class="quick-btn orange">Vegetarian Protein</button>
+        <button onclick="quickAction('hydration tips')" class="quick-btn blue">Hydration</button>
+        <button onclick="quickAction('gluten free options')" class="quick-btn purple">Gluten Free</button>
+      </div>
+    </div>
+
+    <div class="ai-panel">
+      <div id="chat" class="chat-box"></div>
+
+      <div class="chat-input">
+        <input id="userPrompt" placeholder='Ask me anything about nutrition, allergies, workouts, or meal planning...' />
+        <button id="sendBtn" class="btn">Send</button>
+      </div>
+    </div>
+
+    <div style="margin-top:20px; text-align: center;">
+      <button id="applyChanges" class="btn">Apply Suggested Changes to My Plan</button>
+      <a href="plan.html" class="btn" style="background: linear-gradient(135deg, #ff9800, #f57c00); margin-left: 10px;">
+        📋 View My Plan
+      </a>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const chat = document.getElementById('chat');
+      const input = document.getElementById('userPrompt');
+
+      function addMessage(sender, text) {
+        const el = document.createElement('div');
+        el.className = 'msg ' + (sender === 'user' ? 'msg-user' : 'msg-ai');
+        el.innerHTML = '<div class="msg-text">' + text.replace(/\n/g, '<br>') + '</div>';
+        chat.appendChild(el);
+        chat.scrollTop = chat.scrollHeight;
+      }
+
+      document.getElementById('sendBtn').addEventListener('click', () => {
+        const q = input.value.trim();
+        if (!q) return;
+        addMessage('user', q);
+        addMessage('ai', 'Thinking...');
+        input.value = '';
+        setTimeout(() => {
+          const res = aiHandle(q);
+          chat.removeChild(chat.lastChild);
+          addMessage('ai', res.reply);
+          if (res.suggestedPlan) {
+            localStorage.setItem('smartdiet_suggestion', JSON.stringify(res.suggestedPlan));
+          }
+        }, 500);
+      });
+
+      window.quickAction = function (query) {
+        document.getElementById('userPrompt').value = query;
+        document.getElementById('sendBtn').click();
+      };
+
+      document.getElementById('applyChanges').addEventListener('click', () => {
+        const s = localStorage.getItem('smartdiet_suggestion');
+        if (!s) {
+          alert('No suggestions available. Ask the AI for replacements or adjustments first.');
+          return;
+        }
+        localStorage.setItem('smartdiet_plan', s);
+        alert('Suggestions applied. Go to "My Plan" to see the changes.');
+        window.location.href = 'plan.html';
+      });
+
+      // Load profile and show welcome message
+      const rawProfile = localStorage.getItem('smartdiet_profile');
+      if (rawProfile) {
+        try {
+          const p = JSON.parse(rawProfile);
+          const allergyText = p.allergy ? `I see you have dietary needs: ${p.allergy}. All meals are 100% safe.` : 'No allergies detected in your profile.';
+          addMessage('ai', `Hello ${p.name}! 👋 I'm your SmartDiet AI Coach.\n\n${allergyText}\n\nI can help you with:\n• Meal planning & alternatives\n• Allergy-safe food guidance\n• Nutrition advice\n• Workout recommendations\n• Cooking tips\n\nWhat would you like to know?`);
+        } catch (e) {
+          addMessage('ai', 'Hello! I\'m your SmartDiet AI Coach. Please create your profile first to get personalized advice.');
+        }
+      } else {
+        addMessage('ai', `Hello! I'm your SmartDiet AI Coach. 👋\n\nI can help you with:\n• Meal planning & alternatives\n• Allergy-safe food guidance\n• Nutrition & macronutrient advice\n• Workout recommendations\n• Cooking tips\n\nCreate your profile first for personalized advice!`);
+      }
+
+      input.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+          document.getElementById('sendBtn').click();
+        }
+      });
+
+      // Focus on input
+      input.focus();
+    });
+  </script>
+</body>
+
+</html>
